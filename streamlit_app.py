@@ -8,27 +8,27 @@ from datetime import datetime, timedelta
 conn = sqlite3.connect("loopbreaker.db", check_same_thread=False)
 c = conn.cursor()
 
-def init_db():
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT UNIQUE,
-            password_hash TEXT,
-            age INTEGER,
-            gender TEXT,
-            profession TEXT,
-            consent INTEGER DEFAULT 0,
-            signup_date TEXT
+#def init_db():
+   # c.execute("""
+     #  CREATE TABLE IF NOT EXISTS users (
+       #     id INTEGER PRIMARY KEY AUTOINCREMENT,
+        #    email TEXT UNIQUE,
+        #    password_hash TEXT,
+         #   age INTEGER,
+         #   gender TEXT,
+         #   profession TEXT,
+         #   consent INTEGER DEFAULT 0,
+         #   signup_date TEXT
         )
-    """)
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS progress (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            timestamp TEXT,
-            question TEXT,
-            response TEXT,
-            FOREIGN KEY(user_id) REFERENCES users(id)
+   # """)
+   # c.execute("""
+      #  CREATE TABLE IF NOT EXISTS progress (
+       #     id INTEGER PRIMARY KEY AUTOINCREMENT,
+       #     user_id INTEGER,
+       #     timestamp TEXT,
+       #     question TEXT,
+         #   response TEXT,
+        #    FOREIGN KEY(user_id) REFERENCES users(id)
         )
     """)
     # Indexes for constant-time lookups
