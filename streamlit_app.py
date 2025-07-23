@@ -450,12 +450,12 @@ st.title("LoopBreakerMD: Decision Loop Unwinder")
 #user = st.session_state.user
 
 # Demographics
-if user["age"] is None:
-    collect_demographics(user)
+#if user["age"] is None:
+#    collect_demographics(user)
 
 # Consent
-if not user["consent"]:
-    ask_consent(user)
+#if not user["consent"]:
+#    ask_consent(user)
 
 # Unwinding interface
 st.header("🌀 Explore Your Thought Loop")
