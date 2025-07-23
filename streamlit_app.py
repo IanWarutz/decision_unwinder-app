@@ -471,7 +471,7 @@ if st.button("Start Unwinding"):
         st.error("Please enter something to explore.")
 
 # 7-day & 14-day reminders
-delta = datetime.utcnow() - user["signup_date"]
+delta = datetime.utcnow() #- user["signup_date"]
 if delta.days == 7:
     st.info("📅 Day 7 Check-in: Review your past entries and notice patterns.")
 elif delta.days == 14:
