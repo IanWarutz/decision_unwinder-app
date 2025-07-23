@@ -1,45 +1,57 @@
 import streamlit as st
 import sqlite3
-import hashlib
-from datetime import datetime, timedelta
+# import hashlib    # Hidden: email/password logic removed
+from datetime import datetime
 
 # --- Database Setup ---
-
 conn = sqlite3.connect("loopbreaker.db", check_same_thread=False)
 c = conn.cursor()
 
-#def init_db():
-   # c.execute("""
-     #  CREATE TABLE IF NOT EXISTS users (
-       #     id INTEGER PRIMARY KEY AUTOINCREMENT,
-        #    email TEXT UNIQUE,
-        #    password_hash TEXT,
-         #   age INTEGER,
-         #   gender TEXT,
-         #   profession TEXT,
-         #   consent INTEGER DEFAULT 0,
-         #   signup_date TEXT
-       # )
-   # """)
-   # c.execute("""
-      #  CREATE TABLE IF NOT EXISTS progress (
-       #     id INTEGER PRIMARY KEY AUTOINCREMENT,
-       #     user_id INTEGER,
-       #     timestamp TEXT,
-       #     question TEXT,
-         #   response TEXT,
-        #    FOREIGN KEY(user_id) REFERENCES users(id)
-       # )
-    """)
-    # Indexes for constant-time lookups
-    #c.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
-    #c.execute("CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id)")
-    #conn.commit()
+def init_db():
+    # --- User table hidden (email/password logic removed) ---
+    # c.execute("""
+    #     CREATE TABLE IF NOT EXISTS users (
+    #         id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #         email TEXT UNIQUE,
+    #         password_hash TEXT,
+    #         age INTEGER,
+    #         gender TEXT,
+    #         profession TEXT,
+    #         consent INTEGER DEFAULT 0,
+    #         signup_date TEXT
+    #     )
+    # """)
+    #
+    # c.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
+    #
+    # def hash_password(pw: str) -> str:
+    #     return hashlib.sha256(pw.encode()).hexdigest()
 
-#def hash_password(password: str) -> str:
-    #return hashlib.sha256(password.encode()).hexdigest()
+    # Progress table remains active to track user entries
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS progress (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT,
+            question TEXT,
+            response TEXT
+        )
+    """)
+    c.execute("CREATE INDEX IF NOT EXISTS idx_progress_time ON progress(timestamp)")
+    conn.commit()
 
 init_db()
+
+# --- Consent Form (unchanged) ---
+st.subheader("📝 Informed Consent")
+st.write("""
+• Your responses are stored locally in this app’s database.  
+• No personal data is sent to any server or third party.  
+• You can delete your local data at any time by clearing the browser cache.
+""")
+if not st.checkbox("I have read and agree to the data policy"):
+    st.warning("Consent is required to proceed.")
+    st.stop()
+
 
 # --- Rumination Loops & Evidence-Based Solutions ---
 
