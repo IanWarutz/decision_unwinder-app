@@ -29,7 +29,7 @@ c = conn.cursor()
        #     question TEXT,
          #   response TEXT,
         #    FOREIGN KEY(user_id) REFERENCES users(id)
-        )
+       # )
     """)
     # Indexes for constant-time lookups
     #c.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
