@@ -32,12 +32,12 @@ def init_db():
         )
     """)
     # Indexes for constant-time lookups
-    c.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
-    c.execute("CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id)")
-    conn.commit()
+    #c.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
+    #c.execute("CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id)")
+    #conn.commit()
 
-def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+#def hash_password(password: str) -> str:
+    #return hashlib.sha256(password.encode()).hexdigest()
 
 init_db()
 
