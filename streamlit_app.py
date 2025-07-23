@@ -438,16 +438,16 @@ def unwind_session(user):
 # --- Main App ---
 
 st.title("LoopBreakerMD: Decision Loop Unwinder")
-if "user" not in st.session_state:
-    st.write("For help, visit [docs.streamlit.io](https://docs.streamlit.io/).")
-    mode = st.radio("Have an account?", ["Log In","Sign Up"])
-    if mode == "Sign Up":
-        signup()
-    else:
-        login()
-    st.stop()
+#if "user" not in st.session_state:
+ #   st.write("For help, visit [docs.streamlit.io](https://docs.streamlit.io/).")
+#    mode = st.radio("Have an account?", ["Log In","Sign Up"])
+ #   if mode == "Sign Up":
+#        signup()
+ #   else:
+#        login()
+#    st.stop()
 
-user = st.session_state.user
+#user = st.session_state.user
 
 # Demographics
 if user["age"] is None:
