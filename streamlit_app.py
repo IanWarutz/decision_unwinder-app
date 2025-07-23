@@ -64,7 +64,7 @@ profession = st.text_input("Profession / Student status")
 if st.button("Continue"):
     # Save demographics in session and advance to the app
     st.session_state.demo = {"age": age, "gender": gender, "profession": profession}
-    st.experimental_rerun()
+    st.rerun()
 
 # Block further UI until demographics are captured
 if "demo" not in st.session_state:
@@ -298,6 +298,31 @@ RUMINATION_DB = {
 }
 
 # --- Authentication ---
+# --- Owner-only: Secure Code Section ---
+def owner_access():
+    st.warning("Owner's Secure Access: Enter password to unlock sensitive code/tools.")
+    password_input = st.text_input("Password", type="password")
+    if password_input:
+        if os.path.exists(".owner_password"):
+            with open(".owner_password") as f:
+                real_pwd = f.read().strip()
+            if password_input == real_pwd:
+                st.success("Access granted! Owner-only code below:")
+                # Import or run your sensitive functions here, e.g.:
+                import app_core
+                app_core.owner_tools()
+                st.rerun()
+            else:
+                st.error("Access denied: Incorrect password.")
+        else:
+            st.error("Password file not found. Contact app owner.")
+    else:
+        st.info("Enter password to access owner tools.")
+
+# Only show owner section if a query param ?owner=1 is present for stealth.
+if st.query_params.get("owner") == ["1"]:
+    owner_access()
+
 
 def signup():
     st.subheader("🔐 Sign Up")
@@ -355,7 +380,7 @@ def collect_demographics(user):
             UPDATE users SET age=?, gender=?, profession=? WHERE id=?
         """, (age, gender, profession, user["id"]))
         conn.commit()
-        st.experimental_rerun()
+        st.rerun()
 
 def ask_consent(user):
     st.subheader("📝 Informed Consent")
