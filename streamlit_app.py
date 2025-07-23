@@ -324,46 +324,46 @@ if st.query_params.get("owner") == ["1"]:
     owner_access()
 
 
-def signup():
-    st.subheader("🔐 Sign Up")
-    email = st.text_input("Email", key="su_email")
-    pw = st.text_input("Password", type="password", key="su_pw")
-    if st.button("Create Account"):
-        pw_hash = hash_password(pw)
-        try:
-            c.execute("""
-                INSERT INTO users (email, password_hash, signup_date)
-                VALUES (?, ?, ?)
-            """, (email, pw_hash, datetime.utcnow().isoformat()))
-            conn.commit()
-            st.success("Account created! Please log in.")
-        except sqlite3.IntegrityError:
-            st.error("That email is already registered.")
+#def signup():
+#    st.subheader("🔐 Sign Up")
+ #   email = st.text_input("Email", key="su_email")
+ #   pw = st.text_input("Password", type="password", key="su_pw")
+ #   if st.button("Create Account"):
+  #      pw_hash = hash_password(pw)
+   #     try:
+   #         c.execute("""
+   #             INSERT INTO users (email, password_hash, signup_date)
+   #             VALUES (?, ?, ?)
+   #         """, (email, pw_hash, datetime.utcnow().isoformat()))
+   #         conn.commit()
+   #         st.success("Account created! Please log in.")
+    #    except sqlite3.IntegrityError:
+   #         st.error("That email is already registered.")
 
-def login():
-    st.subheader("🔑 Log In")
-    email = st.text_input("Email", key="li_email")
-    pw = st.text_input("Password", type="password", key="li_pw")
-    if st.button("Log In"):
-        pw_hash = hash_password(pw)
-        c.execute("""
-            SELECT id, email, age, gender, profession, consent, signup_date
-            FROM users WHERE email=? AND password_hash=?
-        """, (email, pw_hash))
-        row = c.fetchone()
-        if row:
-            st.session_state.user = {
-                "id": row[0],
-                "email": row[1],
-                "age": row[2],
-                "gender": row[3],
-                "profession": row[4],
-                "consent": row[5],
-                "signup_date": datetime.fromisoformat(row[6])
-            }
-            st.success("Logged in!")
-        else:
-            st.error("Invalid credentials.")
+#def login():
+#    st.subheader("🔑 Log In")
+#    email = st.text_input("Email", key="li_email")
+#    pw = st.text_input("Password", type="password", key="li_pw")
+ #   if st.button("Log In"):
+#        pw_hash = hash_password(pw)
+#        c.execute("""
+#            SELECT id, email, age, gender, profession, consent, signup_date
+  #          FROM users WHERE email=? AND password_hash=?
+ #       """, (email, pw_hash))
+  #      row = c.fetchone()
+   #     if row:
+    #        st.session_state.user = {
+     #           "id": row[0],
+      #          "email": row[1],
+       #         "age": row[2],
+        #        "gender": row[3],
+         #       "profession": row[4],
+          #      "consent": row[5],
+           #     "signup_date": datetime.fromisoformat(row[6])
+   #         }
+  #          st.success("Logged in!")
+ #       else:
+#            st.error("Invalid credentials.")
 
 # --- Demographics & Consent ---
 
@@ -392,7 +392,7 @@ def ask_consent(user):
     if st.checkbox("I agree to the data policy"):
         c.execute("UPDATE users SET consent=1 WHERE id=?", (user["id"],))
         conn.commit()
-        st.experimental_rerun()
+        st.rerun()
     else:
         st.warning("Consent is required to proceed.")
         st.stop()
