@@ -1,6 +1,5 @@
 import streamlit as st
 import sqlite3
-# import hashlib    # Hidden: email/password logic removed
 from datetime import datetime
 
 # --- Database Setup ---
@@ -8,7 +7,7 @@ conn = sqlite3.connect("loopbreaker.db", check_same_thread=False)
 c = conn.cursor()
 
 def init_db():
-    # --- User table hidden (email/password logic removed) ---
+    # --- Auth tables hidden (email/password logic commented out) ---
     # c.execute("""
     #     CREATE TABLE IF NOT EXISTS users (
     #         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,13 +20,13 @@ def init_db():
     #         signup_date TEXT
     #     )
     # """)
-    #
     # c.execute("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)")
     #
+    # -- password-hash helper hidden --
     # def hash_password(pw: str) -> str:
     #     return hashlib.sha256(pw.encode()).hexdigest()
 
-    # Progress table remains active to track user entries
+    # Progress table to store each unwind step
     c.execute("""
         CREATE TABLE IF NOT EXISTS progress (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,16 +40,46 @@ def init_db():
 
 init_db()
 
-# --- Consent Form (unchanged) ---
+# --- Informed Consent (unchanged) ---
 st.subheader("📝 Informed Consent")
 st.write("""
 • Your responses are stored locally in this app’s database.  
-• No personal data is sent to any server or third party.  
-• You can delete your local data at any time by clearing the browser cache.
+• No personal data is sent to any external server or third party.  
+• You can delete your data anytime by clearing your browser cache.
 """)
 if not st.checkbox("I have read and agree to the data policy"):
     st.warning("Consent is required to proceed.")
     st.stop()
+
+# --- Demographics (18+ gate) ---
+st.subheader("👤 Tell us about you")
+age = st.number_input("Age", min_value=0, max_value=120, step=1)
+if age < 18:
+    st.warning("You must be 18 or older to use this tool.")
+    st.stop()
+
+gender = st.selectbox("Gender", ["Prefer not to say", "Female", "Male", "Other"])
+profession = st.text_input("Profession / Student status")
+
+if st.button("Continue"):
+    # Save demographics in session and advance to the app
+    st.session_state.demo = {"age": age, "gender": gender, "profession": profession}
+    st.experimental_rerun()
+
+# Block further UI until demographics are captured
+if "demo" not in st.session_state:
+    st.stop()
+
+# --- Main App Interaction ---
+st.header("🌀 Explore Your Thought Loop")
+
+# (Insert your unwind_session() call or other app logic here)
+# e.g.:
+# question = st.text_input("What thought is on repeat?")
+# if st.button("Start Unwinding"):
+#     unwind_session(question)
+
+# …rest of your Streamlit app…
 
 
 # --- Rumination Loops & Evidence-Based Solutions ---
