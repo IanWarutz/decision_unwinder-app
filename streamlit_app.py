@@ -19,7 +19,7 @@ c = conn.cursor()
          #   profession TEXT,
          #   consent INTEGER DEFAULT 0,
          #   signup_date TEXT
-        )
+       # )
    # """)
    # c.execute("""
       #  CREATE TABLE IF NOT EXISTS progress (
